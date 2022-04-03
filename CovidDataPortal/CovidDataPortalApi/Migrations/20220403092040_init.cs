@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CovidDataPortalApi.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,20 +16,22 @@ namespace CovidDataPortalApi.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Age = table.Column<int>(type: "int", nullable: false),
+                    Age = table.Column<int>(type: "int", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Block = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     District = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateOfAdmission = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SampleCollection = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateOfAdmission = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    SampleCollected = table.Column<DateTime>(type: "datetime2", nullable: true),
                     SampleTestedAt = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateOfDeath = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DaysTestedBeforeDeath = table.Column<int>(type: "int", nullable: false),
-                    DaysAdmitted = table.Column<int>(type: "int", nullable: false),
-                    DaysAdmittedInICU = table.Column<int>(type: "int", nullable: false),
-                    DaysInOxygenSupportOrVentillator = table.Column<int>(type: "int", nullable: false),
+                    UnderlyingCondition = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HospitalWhereAdmitted = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateOfDeath = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DaysTestedBeforeDeath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DaysAdmitted = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DaysAdmittedInICU = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DaysInOxygenSupportOrVentillator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Remarks = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     VaccinationStatus = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },

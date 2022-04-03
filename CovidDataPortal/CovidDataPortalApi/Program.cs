@@ -1,3 +1,4 @@
+using CovidDataPortalApi.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,9 @@ builder.Services.AddDbContext<CovidDataPortalApi.Data.CovidDataPortalDbContext>(
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConString"));
 });
+
+builder.Services.AddScoped<IDeathRepository, DeathReposotory>();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
 

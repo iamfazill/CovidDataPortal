@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CovidDataPortalApi.Migrations
 {
     [DbContext(typeof(CovidDataPortalDbContext))]
-    [Migration("20220403065432_columnAdded")]
-    partial class columnAdded
+    [Migration("20220403092040_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,17 +26,17 @@ namespace CovidDataPortalApi.Migrations
 
             modelBuilder.Entity("CovidDataPortalApi.Models.Domain.Deaths", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Age")
+                    b.Property<int?>("Age")
                         .HasColumnType("int");
 
                     b.Property<string>("Block")
@@ -47,10 +47,10 @@ namespace CovidDataPortalApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateOfAdmission")
+                    b.Property<DateTime?>("DateOfAdmission")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfDeath")
+                    b.Property<DateTime?>("DateOfDeath")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DaysAdmitted")
@@ -89,7 +89,7 @@ namespace CovidDataPortalApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("SampleCollection")
+                    b.Property<DateTime?>("SampleCollected")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SampleTestedAt")

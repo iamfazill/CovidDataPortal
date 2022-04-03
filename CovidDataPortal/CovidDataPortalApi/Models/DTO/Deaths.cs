@@ -1,4 +1,4 @@
-﻿namespace CovidDataPortalApi.Models.Domain
+﻿namespace CovidDataPortalApi.Models.DTO
 {
     public class Deaths
     {
@@ -36,5 +36,4 @@
 
         public string VaccinationStatus { get; set; }
     }
-            
 }
