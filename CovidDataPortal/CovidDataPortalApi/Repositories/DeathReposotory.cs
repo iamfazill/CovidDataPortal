@@ -1,13 +1,13 @@
 ﻿using CovidDataPortalApi.Data;
 using CovidDataPortalApi.Models.Domain;
+ 
 using Microsoft.EntityFrameworkCore;
 
 namespace CovidDataPortalApi.Repositories
 {
     public interface IDeathRepository
     {
-        Task<IEnumerable<Models.Domain.Deaths>> GetallDeathsAsync();
-
+        Task<List<Deaths>> GetallDeathsAsync( string sortBy, string searchString, int pageNo, int pageSize );
         Task<Deaths> GetSingleDeathAsync(int id);
 
         Task<Deaths> AddDeathAsync(Deaths death);
@@ -15,6 +15,8 @@ namespace CovidDataPortalApi.Repositories
         Task<Deaths> DeleteDeathAsync(int id);
 
         Task<Deaths> UpdateDeathAsync(int id, Deaths death);
+
+        Task<int> GetDeathCountAsync();
     }
 
 
@@ -29,14 +31,64 @@ namespace CovidDataPortalApi.Repositories
 
 
 
-        public async Task<IEnumerable<Deaths>> GetallDeathsAsync()
+        public async Task<List<Deaths>> GetallDeathsAsync(string sortBy,string searchString, int pageNo, int pageSize)
         {
-            return await CovidDataPortalDbContext.Deaths.ToListAsync();
+            //sorting
+            var allDeaths = await CovidDataPortalDbContext.Deaths.ToListAsync();
+
+            if(!string.IsNullOrEmpty(sortBy))
+            {
+                switch(sortBy)
+                {
+                    case "name_desc":
+                        allDeaths = allDeaths.OrderByDescending(n => n.Name).ToList();
+                        break;
+                    case "name_aesc":
+                        allDeaths = allDeaths.OrderBy(n => n.Name).ToList();
+                        break;
+                    default:
+                        break;
+
+                }
+
+
+            }
+
+            if(!string.IsNullOrEmpty(searchString))
+            {
+
+                allDeaths = allDeaths.Where(n => n.Name.Contains(searchString,StringComparison.CurrentCultureIgnoreCase)).ToList();
+
+            }
+
+            return allDeaths;
+
+            //var pagesize = 10f;
+            //var pageCount = Math.Ceiling(CovidDataPortalDbContext.Deaths.Count() / pagesize);
+            //var skip = (pageNo - 1) * (int)pagesize;
+            //var take = (int)pagesize;
+
+
+            //var resultDeaths= await CovidDataPortalDbContext.Deaths 
+            //    .Skip(skip)
+            //    .Take(take)
+            //    .ToListAsync();
+
+
+            //var deaths = new deathResource();
+
+            //deaths.allDeathResponses = resultDeaths;
+            //deaths.currentPage = pageNo;
+            //deaths.pages=(int)pageCount;
+            //return deaths;
+
+
         }
 
         public async Task<Deaths> GetSingleDeathAsync(int id)
         {
-            return await CovidDataPortalDbContext.Deaths.FirstOrDefaultAsync(x => x.Id == id);
+            var singledeath= await CovidDataPortalDbContext.Deaths.FirstOrDefaultAsync(x => x.Id == id);
+            return(singledeath);
         }
 
         public async Task<Deaths> AddDeathAsync(Deaths death)
@@ -100,6 +152,11 @@ namespace CovidDataPortalApi.Repositories
 
 
 
+        }
+
+        public async Task<int> GetDeathCountAsync()
+        {
+             return await CovidDataPortalDbContext.Deaths.CountAsync();
         }
     }
 }
