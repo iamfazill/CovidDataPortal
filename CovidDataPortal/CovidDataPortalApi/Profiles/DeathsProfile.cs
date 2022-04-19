@@ -6,7 +6,10 @@ namespace CovidDataPortalApi.Profiles
     {
         public DeathsProfile()
         {
-            CreateMap<Models.Domain.Deaths,Models.DTO.Deaths>().ReverseMap(); 
+            CreateMap<Models.Domain.Deaths,Models.DTO.Deaths>().ReverseMap();
+           
         }
+
+        
     }
 }

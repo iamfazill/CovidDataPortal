@@ -31,6 +31,7 @@ builder.Services.AddDbContext<CovidDataPortalApi.Data.CovidDataPortalDbContext>(
 });
 
 builder.Services.AddScoped<IDeathRepository, DeathReposotory>();
+builder.Services.AddScoped<ICaseClassRepository, CaseClassRepository>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();

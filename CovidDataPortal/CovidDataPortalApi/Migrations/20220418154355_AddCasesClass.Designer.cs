@@ -4,6 +4,7 @@ using CovidDataPortalApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CovidDataPortalApi.Migrations
 {
     [DbContext(typeof(CovidDataPortalDbContext))]
-    partial class CovidDataPortalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220418154355_AddCasesClass")]
+    partial class AddCasesClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +31,6 @@ namespace CovidDataPortalApi.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
-
-                    b.Property<int?>("Anc")
-                        .HasColumnType("int");
 
                     b.Property<int?>("Comorbid")
                         .HasColumnType("int");

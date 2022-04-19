@@ -9,5 +9,7 @@ namespace CovidDataPortalApi.Data
 
         }
         public DbSet<Models.Domain.Deaths> Deaths { get; set; }
+
+        public DbSet<Models.Domain.CasesClass> casesClass { get; set; }
     }
 }

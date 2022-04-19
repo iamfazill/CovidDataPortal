@@ -25,12 +25,12 @@ namespace CovidDataPortalApi.Controllers
 
         [HttpGet]
         [ActionName("GetAllDeaths")]
-        public async Task<IActionResult> GetAllDeaths(string? sortBy ,string? searchString ,int pageNo = 1, int pageSize = 10)
+        public async Task<IActionResult> GetAllDeaths()
         {
 
 
 
-            var deaths = await DeathRepository.GetallDeathsAsync(sortBy, searchString,pageNo, pageSize);
+            var deaths = await DeathRepository.GetallDeathsAsync();
 
             //var ResponceDeath = new deathResource 
             //{
