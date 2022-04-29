@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CovidDataPortalApi.Models.Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace CovidDataPortalApi.Data
 {
-    public class CovidDataPortalDbContext:DbContext
+    public class CovidDataPortalDbContext:IdentityDbContext<ApplicationUser>
     {
         public CovidDataPortalDbContext(DbContextOptions<CovidDataPortalDbContext> options):base(options)
         {

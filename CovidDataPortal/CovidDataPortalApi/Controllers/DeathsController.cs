@@ -2,6 +2,7 @@
 using CovidDataPortalApi.Models.Domain;
 using CovidDataPortalApi.Models.DTO;
 using CovidDataPortalApi.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace CovidDataPortalApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DeathsController : ControllerBase
     {
         public IDeathRepository DeathRepository { get; }
@@ -25,7 +27,7 @@ namespace CovidDataPortalApi.Controllers
 
         [HttpGet]
         [ActionName("GetAllDeaths")]
-        public  IActionResult GetAllDeaths(string? searchString, string? sortColumn, string? sortOrder = "Asc", int pageNo = 1, int pageSize = 20000)
+        public  IActionResult GetAllDeaths(string? searchString, string? sortColumn="Name", string? sortOrder = "Asc", int pageNo = 1, int pageSize = 20000)
         {
 
 
