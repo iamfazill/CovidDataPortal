@@ -1,14 +1,16 @@
 ﻿using CovidDataPortalApi.Data;
 using CovidDataPortalApi.Helpers.paging;
+using CovidDataPortalApi.Models;
+using CovidDataPortalApi.Models.CommonModels;
 using CovidDataPortalApi.Models.Domain;
- 
+
 using Microsoft.EntityFrameworkCore;
 
 namespace CovidDataPortalApi.Repositories
 {
     public interface IDeathRepository
     {
-        Task<List<Deaths>> GetallDeathsAsync( );
+        ResponseModel GetallDeathsAsync(string searchString, string sortColumn, string sortOrder, int pageNo, int pageSize);
         Task<Deaths> GetSingleDeathAsync(int id);
 
         Task<Deaths> AddDeathAsync(Deaths death);
@@ -16,7 +18,7 @@ namespace CovidDataPortalApi.Repositories
         Task<Deaths> DeleteDeathAsync(int id);
 
         Task<Deaths> UpdateDeathAsync(int id, Deaths death);
- 
+
     }
 
 
@@ -31,12 +33,66 @@ namespace CovidDataPortalApi.Repositories
 
 
 
-        public async Task<List<Deaths>> GetallDeathsAsync( )
+        public ResponseModel GetallDeathsAsync(string searchString, string sortColumn, string sortOrder, int pageNo, int pageSize)
         {
+            ResponseModel res = new ResponseModel();
+            int skip = (pageNo - 1) * pageSize;
+            var pages = new PaginationModel<Deaths>();
+
+            try
+
+            {
+                var data = CovidDataPortalDbContext.Deaths
+                    .Where(x => string.IsNullOrEmpty(searchString) ||
+                  x.Name.Contains(searchString) ||
+                  x.Address.Contains(searchString) ||
+                  x.Block.Contains(searchString) ||
+                  x.ContactNumber.Contains(searchString));
 
 
-            var deaths = await CovidDataPortalDbContext.Deaths.ToListAsync();
-            return deaths;//new code
+                switch ((sortColumn + "").ToLower())
+                {
+                    case "name":
+                        data = (sortOrder + "").ToLower() == "desc" ? data.OrderByDescending(c => c.Name) : data.OrderBy(c => c.Name);
+                        break;
+
+                    case "block":
+                        data = (sortOrder + "").ToLower() == "desc" ? data.OrderByDescending(c => c.Block) : data.OrderBy(c => c.Block);
+                        break;
+                    case "age":
+                        data = (sortOrder + "").ToLower() == "desc" ? data.OrderByDescending(c => c.Age) : data.OrderBy(c => c.Age);
+                        break;
+                    case "address":
+                        data = (sortOrder + "").ToLower() == "desc" ? data.OrderByDescending(c => c.Address) : data.OrderBy(c => c.Address);
+                        break;
+
+                    default:
+                        data = data;
+                        break;
+                }
+                pages.Records = data
+                    .Skip(skip)
+                    .Take(pageSize)
+                    .ToList();
+
+                pages.RecordCount = new RecordCountModel();
+                pages.RecordCount.Count = CovidDataPortalDbContext.Deaths.Count();
+                res.Message = "All users Fetched Successfully";
+                res.Data = pages;
+
+
+            }
+
+            catch (Exception ex)
+            {
+                res.Success = false;
+                res.ErrorMessage = ex.Message;
+
+            }
+
+            return res;
+
+            //new code
 
 
 
@@ -105,8 +161,8 @@ namespace CovidDataPortalApi.Repositories
 
         public async Task<Deaths> GetSingleDeathAsync(int id)
         {
-            var singledeath= await CovidDataPortalDbContext.Deaths.FirstOrDefaultAsync(x => x.Id == id);
-            return(singledeath);
+            var singledeath = await CovidDataPortalDbContext.Deaths.FirstOrDefaultAsync(x => x.Id == id);
+            return (singledeath);
         }
 
         public async Task<Deaths> AddDeathAsync(Deaths death)
@@ -160,9 +216,9 @@ namespace CovidDataPortalApi.Repositories
             updatedDeath.Remarks = death.Remarks;
             updatedDeath.VaccinationStatus = death.VaccinationStatus;
 
-             CovidDataPortalDbContext.Update(updatedDeath);
+            CovidDataPortalDbContext.Update(updatedDeath);
 
-             await CovidDataPortalDbContext.SaveChangesAsync();
+            await CovidDataPortalDbContext.SaveChangesAsync();
 
 
 
@@ -172,6 +228,6 @@ namespace CovidDataPortalApi.Repositories
 
         }
 
-        
+
     }
 }
